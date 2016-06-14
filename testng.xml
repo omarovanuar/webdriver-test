@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Suite">
-    <test name="SuiteTest">
+    <test name="MailRuTest">
 
         <parameter name="password" value="123456789a" />
         <parameter name="login" value="robbie.williams.92" />

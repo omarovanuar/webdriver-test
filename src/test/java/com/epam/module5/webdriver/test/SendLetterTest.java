@@ -2,7 +2,10 @@ package com.epam.module5.webdriver.test;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 public class SendLetterTest extends BaseTest{
@@ -16,8 +19,14 @@ public class SendLetterTest extends BaseTest{
 
     @Test(groups = "send-letter", dependsOnMethods = ("testSendLetter"), expectedExceptions = NoSuchElementException.class)
     public void testCheckDraft() throws InterruptedException {
-        Thread.sleep(1000);
-        WebElement draftViewLink = driver.findElement(By.xpath("//a[@href='/messages/drafts/']"));
+//        Thread.sleep(1000);
+//        WebElement draftViewLink = driver.findElement(By.xpath("//a[@href='/messages/drafts/']"));
+        WebElement draftViewLink = (new WebDriverWait(driver, 10)).until(new ExpectedCondition<WebElement>() {
+            @Override
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(By.xpath("//a[@href='/messages/drafts/']"));
+            }
+        });
         draftViewLink.click();
         driver.findElement(By.xpath("//a[@data-subject='WebDriverTest']"));
     }
