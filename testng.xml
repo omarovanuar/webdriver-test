@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <test name="SuiteTest">
+
+        <parameter name="password" value="123456789a" />
+        <parameter name="login" value="robbie.williams.92" />
+
+        <classes>
+            <class name="com.epam.module5.webdriver.test.EnterMailTest" />
+            <class name="com.epam.module5.webdriver.test.CreateLetterTest" />
+            <class name="com.epam.module5.webdriver.test.CheckDraftTest" />
+            <class name="com.epam.module5.webdriver.test.SendLetterTest" />
+            <class name="com.epam.module5.webdriver.test.LogoutTest" />
+        </classes>
+    </test>
+</suite>
