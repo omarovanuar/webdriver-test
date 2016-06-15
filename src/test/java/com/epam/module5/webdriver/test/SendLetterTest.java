@@ -1,46 +1,40 @@
 package com.epam.module5.webdriver.test;
 
-import org.openqa.selenium.By;
+import com.epam.module5.webdriver.page.DraftPage;
+import com.epam.module5.webdriver.page.LetterEditPage;
+import com.epam.module5.webdriver.page.MailPage;
+import com.epam.module5.webdriver.page.SentPage;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SendLetterTest extends BaseTest{
 
     @Test(groups = "send-letter", dependsOnGroups = ("check-draft"))
     public void testSendLetter() {
-        WebElement draftViewButton = driver.findElement(By.xpath("//div[@class='b-toolbar__btn b-toolbar__btn_false js-shortcut']"));
-        draftViewButton.click();
-        System.out.println("Page title is: " + driver.getTitle());
+        LetterEditPage letterEditPage = new LetterEditPage(driver);
+        letterEditPage.sendLetter();
+        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("Новое письмо"));
     }
 
     @Test(groups = "send-letter", dependsOnMethods = ("testSendLetter"), expectedExceptions = NoSuchElementException.class)
     public void testCheckDraft() throws InterruptedException {
-//        Thread.sleep(1000);
-//        WebElement draftViewLink = driver.findElement(By.xpath("//a[@href='/messages/drafts/']"));
-        WebElement draftViewLink = (new WebDriverWait(driver, 10)).until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("//a[@href='/messages/drafts/']"));
-            }
-        });
-        draftViewLink.click();
-        driver.findElement(By.xpath("//a[@data-subject='WebDriverTest']"));
+        MailPage mailPage = new MailPage(driver);
+        DraftPage draftPage = mailPage.isDraftPageLinkDisplayed();
+        draftPage.editSavedLetter();
     }
 
     @Test(groups = "send-letter", dependsOnMethods = "testCheckDraft")
     public void testGoToSent() {
-        WebElement sentLettersLink = driver.findElement(By.xpath("//a[@href='/messages/sent/']"));
-        sentLettersLink.click();
-        System.out.println("Page title is: " + driver.getTitle());
+        MailPage mailPage = new MailPage(driver);
+        SentPage sentPage = mailPage.sentPageView();
+        Assert.assertTrue(sentPage.getDriver().getTitle().contains("Отправленные"));
     }
 
     @Test(groups = "send-letter", dependsOnMethods = "testGoToSent")
     public void testCheckSentLetter() {
-        WebElement sentLettersLink = driver.findElement(By.xpath("//a[@data-subject='WebDriverTest']"));
-        sentLettersLink.click();
+        SentPage sentPage = new SentPage(driver);
+        LetterEditPage letterEditPage = sentPage.editSentLetter();
+        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("WebDriverTest - robbie.williams.92@mail.ru"));
     }
 }

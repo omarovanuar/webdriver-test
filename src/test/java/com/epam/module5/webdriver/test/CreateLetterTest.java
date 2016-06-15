@@ -1,35 +1,32 @@
 package com.epam.module5.webdriver.test;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import com.epam.module5.webdriver.page.LetterEditPage;
+import com.epam.module5.webdriver.page.MailPage;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class CreateLetterTest extends BaseTest {
 
     @Test(groups = "create", dependsOnGroups = {"enter"})
     public void testCreateLetter() {
-        WebElement newLetterButton = driver.findElement(By.xpath("//div[@class='b-toolbar__item']/child::a"));
-        newLetterButton.click();
-        System.out.println("Page title is: " + driver.getTitle());
+        MailPage mailPage = new MailPage(driver);
+        LetterEditPage letterEditPage = mailPage.createNewLetter();
+        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("Новое письмо"));
     }
 
     @Test(groups = "create", dependsOnMethods = ("testCreateLetter"))
     public void testFillNewLetter() {
-        WebElement newLetterWho = driver.findElement(By.xpath("//textarea[@class='js-input compose__labels__input']"));
-        newLetterWho.sendKeys("gg-poster@mail.ru");
-        WebElement letterThemeInput = driver.findElement(By.xpath("//input[@class='compose__header__field']"));
-        letterThemeInput.sendKeys("WebDriverTest");
-        WebElement letterFrame = driver.findElement(By.xpath("//iframe[contains(@id, '_composeEditor_ifr')]"));
-        driver.switchTo().frame(letterFrame);
-        WebElement letterTextInput = driver.findElement(By.xpath("//body[@id=\"tinymce\"]"));
-        letterTextInput.clear();
-        letterTextInput.sendKeys("WebDriverTest123Text");
-        driver.switchTo().defaultContent();
+        LetterEditPage letterEditPage = new LetterEditPage(driver);
+        letterEditPage.fillLetterFields("gg-poster@mail.ru", "WebDriverTest", "Hello! It's a Mail.Ru Test");
+        Assert.assertEquals(letterEditPage.getLetterToField(), "gg-poster@mail.ru");
+        Assert.assertEquals(letterEditPage.getLetterThemeField(), "WebDriverTest");
+        Assert.assertEquals(letterEditPage.getLetterTextField(), "Hello! It's a Mail.Ru Test");
     }
-
+//
     @Test(groups = "create", dependsOnMethods = ("testFillNewLetter"))
     public void testSaveToDraft() {
-        WebElement draftSaveButton = driver.findElement(By.xpath("//div[@class='b-toolbar__btn b-toolbar__btn_false b-toolbar__btn_false b-toolbar__btn_false b-toolbar__btn_grouped b-toolbar__btn_grouped_first js-shortcut']"));
-        draftSaveButton.click();
+        LetterEditPage letterEditPage = new LetterEditPage(driver);
+        letterEditPage.saveToDraft();
+        Assert.assertTrue(letterEditPage.isSavedToDraftMessageAppeared());
     }
 }

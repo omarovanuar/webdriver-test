@@ -12,7 +12,7 @@ public class BaseTest {
 
     @BeforeSuite
     public static void beforeSuite() {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     @AfterSuite

@@ -10,13 +10,13 @@ public class LoginPage extends Page{
     private static final String URL = "http://www.mail.ru";
 
     @FindBy(xpath = "//input[@id='mailbox__login']")
-    private WebElement inputUser;
+    private WebElement usernameInput;
 
     @FindBy(xpath = "//input[@id='mailbox__password']")
-    private WebElement inputPassword;
+    private WebElement passwordInput;
 
     @FindBy(xpath = "//input[@id='mailbox__auth__button']")
-    private WebElement buttonLogin;
+    private WebElement loginButton;
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -28,9 +28,9 @@ public class LoginPage extends Page{
     }
 
     public MailPage login(String user, String password) {
-        inputUser.sendKeys(user);
-        inputPassword.sendKeys(password);
-        buttonLogin.click();
+        usernameInput.sendKeys(user);
+        passwordInput.sendKeys(password);
+        loginButton.click();
         return new MailPage(driver);
     }
 

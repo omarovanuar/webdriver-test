@@ -2,8 +2,8 @@
 <suite name="Suite">
     <test name="MailRuTest">
 
-        <parameter name="password" value="123456789a" />
         <parameter name="login" value="robbie.williams.92" />
+        <parameter name="password" value="123456789a" />
 
         <classes>
             <class name="com.epam.module5.webdriver.test.EnterMailTest" />
