@@ -14,7 +14,7 @@ public class DraftPage extends Page {
         PageFactory.initElements(this.driver, this);
     }
 
-    public LetterEditPage editSavedLetter() {
+    public LetterEditPage chooseSavedLetter() {
         savedLetterLink.click();
         return new LetterEditPage(driver);
     }

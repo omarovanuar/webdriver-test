@@ -9,24 +9,13 @@ import org.testng.annotations.Test;
 public class CheckDraftTest extends BaseTest{
 
     @Test(groups = "check-draft", dependsOnGroups = ("create"))
-    public void testGoToDraft() {
+    public void testChooseFromDraft() {
         MailPage mailPage = new MailPage(driver);
         DraftPage draftPage = mailPage.draftPageView();
-        Assert.assertTrue(draftPage.getDriver().getTitle().contains("Черновики"));
-    }
+        Assert.assertTrue(draftPage.getDriver().getTitle().contains("Черновики"), "It's not a Draft Page");
 
-    @Test(groups = "check-draft", dependsOnMethods = ("testGoToDraft"))
-    public void testChooseDraft() {
-        DraftPage draftPage = new DraftPage(driver);
-        LetterEditPage letterEditPage = draftPage.editSavedLetter();
-        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("Новое письмо"));
-    }
-
-    @Test(groups = "check-draft", dependsOnMethods = ("testChooseDraft"))
-    public void testCheckSavedLetterFields() {
-        LetterEditPage letterEditPage = new LetterEditPage(driver);
-        Assert.assertEquals(letterEditPage.getLetterToField(), "gg-poster@mail.ru");
-        Assert.assertEquals(letterEditPage.getLetterThemeField(), "WebDriverTest");
-        Assert.assertEquals(letterEditPage.getLetterTextField(), "Hello! It's a Mail.Ru Test");
+        LetterEditPage letterEditPage = draftPage.chooseSavedLetter();
+        Assert.assertTrue(letterEditPage.getTitle().contains("Новое письмо"), "It's not a Letter Edit Page");
+        Assert.assertTrue(letterEditPage.getLetter().equals(expectedLetter), "Draft letter and expected letter aren't the same");
     }
 }

@@ -14,27 +14,24 @@ public class SendLetterTest extends BaseTest{
     public void testSendLetter() {
         LetterEditPage letterEditPage = new LetterEditPage(driver);
         letterEditPage.sendLetter();
-        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("Новое письмо"));
+        Assert.assertTrue(letterEditPage.isSent(), "Letter wasn't sent");
+        Assert.assertTrue(letterEditPage.sentToUser().equals(sentToUser.getEmail()), "Letter wasn't sent to expected user");
     }
 
     @Test(groups = "send-letter", dependsOnMethods = ("testSendLetter"), expectedExceptions = NoSuchElementException.class)
-    public void testCheckDraft() throws InterruptedException {
+    public void testCheckDraft() {
         MailPage mailPage = new MailPage(driver);
-        DraftPage draftPage = mailPage.isDraftPageLinkDisplayed();
-        draftPage.editSavedLetter();
+        DraftPage draftPage = mailPage.draftPageView();
+        draftPage.chooseSavedLetter();
     }
 
     @Test(groups = "send-letter", dependsOnMethods = "testCheckDraft")
-    public void testGoToSent() {
+    public void testCheckSent() {
         MailPage mailPage = new MailPage(driver);
         SentPage sentPage = mailPage.sentPageView();
-        Assert.assertTrue(sentPage.getDriver().getTitle().contains("Отправленные"));
-    }
+        Assert.assertTrue(sentPage.getTitle().contains("Отправленные"), "It's not a Sent Page");
 
-    @Test(groups = "send-letter", dependsOnMethods = "testGoToSent")
-    public void testCheckSentLetter() {
-        SentPage sentPage = new SentPage(driver);
         LetterEditPage letterEditPage = sentPage.editSentLetter();
-        Assert.assertTrue(letterEditPage.getDriver().getTitle().contains("WebDriverTest - robbie.williams.92@mail.ru"));
+        Assert.assertTrue(letterEditPage.getLetter().equals(expectedLetter), "Sent letter and expected letter aren't the same");
     }
 }

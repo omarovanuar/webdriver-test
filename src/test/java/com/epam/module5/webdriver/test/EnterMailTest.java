@@ -10,11 +10,12 @@ import org.testng.annotations.Test;
 public class EnterMailTest extends BaseTest{
 
     @Test(groups = "enter")
-    @Parameters({"password", "login"})
-    public void testLogin(String password, String login) {
+    @Parameters({"login", "password"})
+    public void testLogin(String login, String password) {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openPage();
         MailPage mailPage = loginPage.login(login, password);
-        Assert.assertTrue(mailPage.getDriver().getTitle().contains("Входящие"));
+        Assert.assertTrue(mailPage.getTitle().contains("Входящие"), "It's not a Main Page");
+        Assert.assertTrue(mailPage.getUserEmail().equals(expectedUser.getEmail()), "Current users' email isn't the same as expected");
     }
 }

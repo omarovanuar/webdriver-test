@@ -11,6 +11,6 @@ public class LogoutTest extends BaseTest{
     public void testLogout() {
         MailPage mailPage = new MailPage(driver);
         LoginPage loginPage = mailPage.logout();
-        Assert.assertTrue(loginPage.getDriver().getTitle().contains("Mail.Ru: почта, поиск в интернете, новости, игры"));
+        Assert.assertTrue(loginPage.getTitle().contains("Mail.Ru: почта, поиск в интернете, новости, игры"), "It's a Login Page");
     }
 }

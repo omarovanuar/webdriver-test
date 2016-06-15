@@ -1,10 +1,13 @@
 package com.epam.module5.webdriver.page;
 
+import com.epam.module5.webdriver.entity.Letter;
+import com.epam.module5.webdriver.entity.LetterFactory;
 import com.google.common.base.Function;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LetterEditPage extends Page{
@@ -31,6 +34,12 @@ public class LetterEditPage extends Page{
 
     @FindBy(xpath = "//div[@class='b-toolbar__btn b-toolbar__btn_false js-shortcut']")
     private WebElement sendLetterButton;
+
+    @FindBy(xpath = "//i[@id='PH_user-email']")
+    private WebElement letterFromI;
+
+    @FindBy(xpath = "//span[@class='message-sent__info']")
+    private WebElement letterSentToSpan;
 
     public LetterEditPage(WebDriver driver) {
         super(driver);
@@ -78,5 +87,25 @@ public class LetterEditPage extends Page{
         sendLetterButton.click();
     }
 
+    public Letter getLetter() {
+        return LetterFactory.create(letterFromI.getText(), getLetterToField(), getLetterThemeField(), getLetterTextField());
+    }
 
+    public String sentToUser() {
+        return (new WebDriverWait(driver, 10)).until(new Function<WebDriver, String>() {
+            @Override
+            public String apply(WebDriver webDriver) {
+                return letterSentToSpan.getText();
+            }
+        });
+    }
+
+    public Boolean isSent() {
+        return (new WebDriverWait(driver, 10)).until(new Function<WebDriver, Boolean>() {
+            @Override
+            public Boolean apply(WebDriver webDriver) {
+                return getTitle().contains("Письмо отправлено");
+            }
+        });
+    }
 }

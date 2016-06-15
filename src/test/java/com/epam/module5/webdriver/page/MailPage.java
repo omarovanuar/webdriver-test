@@ -1,16 +1,9 @@
 package com.epam.module5.webdriver.page;
 
-import com.google.common.base.Function;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.concurrent.TimeUnit;
 
 public class MailPage extends Page {
     @FindBy(xpath = "//a[@class='b-toolbar__btn js-shortcut']")
@@ -24,6 +17,12 @@ public class MailPage extends Page {
 
     @FindBy(xpath = "//a[@id='PH_logoutLink']")
     private WebElement logoutLink;
+
+    @FindBy(xpath = "//div[@class='x-ph__auth_list__item__info__email__text']")
+    private WebElement userName;
+
+    @FindBy(xpath = "//i[@id='PH_user-email']")
+    private WebElement userEmail;
 
     public MailPage(WebDriver driver) {
         super(driver);
@@ -40,15 +39,17 @@ public class MailPage extends Page {
         return new DraftPage(driver);
     }
 
-    public DraftPage isDraftPageLinkDisplayed() throws InterruptedException {
-        Thread.sleep(200);
-        draftLettersLink.click();
-        return new DraftPage(driver);
-    }
-
     public SentPage sentPageView() {
         sentLettersLink.click();
         return new SentPage(driver);
+    }
+
+    public String getUserName() {
+        return userName.getText();
+    }
+
+    public String getUserEmail() {
+        return userEmail.getText();
     }
 
     public LoginPage logout() {
