@@ -1,9 +1,6 @@
 package com.epam.module5.webdriver.test;
 
-import com.epam.module5.webdriver.page.DraftPage;
-import com.epam.module5.webdriver.page.LetterEditPage;
-import com.epam.module5.webdriver.page.MailPage;
-import com.epam.module5.webdriver.page.SentPage;
+import com.epam.module5.webdriver.page.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,7 +28,7 @@ public class SendLetterTest extends BaseTest{
         SentPage sentPage = mailPage.sentPageView();
         Assert.assertTrue(sentPage.getTitle().contains("Отправленные"), "It's not a Sent Page");
 
-        LetterEditPage letterEditPage = sentPage.editSentLetter();
-        Assert.assertTrue(letterEditPage.getLetter().equals(expectedLetter), "Sent letter and expected letter aren't the same");
+        SentLetterEditPage sentLetter = sentPage.editSentLetter();
+        Assert.assertTrue(sentLetter.getUserToEmail().equals(sentToUser.getEmail()), "Sent to User's email is not the same as expected");
     }
 }

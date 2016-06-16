@@ -5,17 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class SentPage extends Page {
-    @FindBy(xpath = "//a[@data-subject='WebDriverTest']")
-    private WebElement sentLetterLink;
+public class SentLetterEditPage extends Page{
+    @FindBy(xpath = "//span[@class='b-letter__head__addrs__value']/span/span[1]")
+    private WebElement letterSentToSpan;
 
-    public SentPage(WebDriver driver) {
+    public SentLetterEditPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(this.driver, this);
     }
 
-    public SentLetterEditPage editSentLetter() {
-        sentLetterLink.click();
-        return new SentLetterEditPage(driver);
+    public String getUserToEmail() {
+        return letterSentToSpan.getText();
     }
 }
