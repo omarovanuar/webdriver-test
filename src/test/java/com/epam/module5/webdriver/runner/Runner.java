@@ -1,5 +1,8 @@
 package com.epam.module5.webdriver.runner;
 
+import com.epam.module5.webdriver.setting.Settings;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
 import org.testng.TestNG;
 import org.testng.xml.Parser;
 import org.testng.xml.XmlSuite;
@@ -9,10 +12,19 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public class Runner {
+    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
+        Settings settings = new Settings();
+        CmdLineParser cmdLineParser = new CmdLineParser(settings);
+        try {
+            cmdLineParser.parseArgument(args);
+            System.out.println("Settings: " + settings);
+        } catch (CmdLineException e) {
+            System.out.println("Invalid arguments: " + e.getMessage());
+            cmdLineParser.printUsage(System.out);
+        }
 
-    public static void main( String[] args ) throws IOException, SAXException, ParserConfigurationException {
         TestNG testng = new TestNG();
-        for (XmlSuite suite : new Parser("./testng.xml").parseToList()) {
+        for (XmlSuite suite : new Parser(settings.pathToTestNG).parseToList()) {
             testng.setCommandLineSuite(suite);
         }
         testng.run();

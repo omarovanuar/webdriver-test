@@ -91,7 +91,7 @@ public class LetterEditPage extends Page{
         return LetterFactory.create(letterFromI.getText(), getLetterToField(), getLetterThemeField(), getLetterTextField());
     }
 
-    public String sentToUser() {
+    public String getUserToEmail() {
         return (new WebDriverWait(driver, 10)).until(new Function<WebDriver, String>() {
             @Override
             public String apply(WebDriver webDriver) {
