@@ -1,6 +1,7 @@
 package com.epam.module5.webdriver.entity;
 
 public class Letter {
+    private String id;
     private String userFrom;
     private String userTo;
     private String theme;
@@ -14,6 +15,14 @@ public class Letter {
         this.userTo = userTo;
         this.theme = theme;
         this.text = text;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserFrom() {
@@ -70,4 +79,5 @@ public class Letter {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
+
 }

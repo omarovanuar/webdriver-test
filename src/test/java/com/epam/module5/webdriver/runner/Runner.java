@@ -1,6 +1,7 @@
 package com.epam.module5.webdriver.runner;
 
 import com.epam.module5.webdriver.setting.Settings;
+import com.epam.module5.webdriver.test.BaseTest;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.testng.TestNG;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 public class Runner {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
-        Settings settings = new Settings();
+        Settings settings = Settings.getArgs4jSettingsInstance();
         CmdLineParser cmdLineParser = new CmdLineParser(settings);
         try {
             cmdLineParser.parseArgument(args);

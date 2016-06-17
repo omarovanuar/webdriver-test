@@ -1,6 +1,5 @@
 package com.epam.module5.webdriver.test;
 
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,9 +12,9 @@ public class SendLetterTest extends BaseTest{
         Assert.assertTrue(steps.isEmailValidInEdit(sentToUser), "Letter wasn't sent to expected user");
     }
 
-    @Test(groups = "send-letter", dependsOnMethods = ("testSendLetter"), expectedExceptions = NoSuchElementException.class)
+    @Test(groups = "send-letter", dependsOnMethods = ("testSendLetter"))
     public void testCheckDrafts() {
-        steps.viewLetterFromDraft();
+        Assert.assertFalse(steps.checkLetterInDraft(), "Sent letter wasn't removed");
     }
 
     @Test(groups = "send-letter", dependsOnMethods = "testCheckDrafts")

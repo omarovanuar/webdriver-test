@@ -1,20 +1,35 @@
 package com.epam.module5.webdriver.step;
 
+import com.epam.module5.webdriver.driver.ChromeDriverFactory;
+import com.epam.module5.webdriver.driver.FirefoxDriverFactory;
+import com.epam.module5.webdriver.driver.WebDriverFactory;
 import com.epam.module5.webdriver.entity.Letter;
 import com.epam.module5.webdriver.entity.User;
 import com.epam.module5.webdriver.page.*;
+import com.epam.module5.webdriver.setting.Settings;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.concurrent.TimeUnit;
 
 public class Steps {
+    private Letter createdLetter;
     private WebDriver driver;
 
     public void initBrowser()
     {
-        driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver = getFactory(Settings.getArgs4jSettingsInstance().browserName).createDriver();
+    }
+
+    private WebDriverFactory getFactory(String factory) {
+        if (factory == null) {
+            return new FirefoxDriverFactory();
+        }
+        switch (factory) {
+            case "chrome":
+                return new ChromeDriverFactory();
+            default:
+                return new FirefoxDriverFactory();
+        }
     }
 
     public void closeDriver()
@@ -53,7 +68,8 @@ public class Steps {
 
     public boolean isLetterValid(Letter letter) {
         LetterEditPage letterPage = new LetterEditPage(driver);
-        return letterPage.getLetter().equals(letter);
+        createdLetter = letterPage.getLetter();
+        return createdLetter.equals(letter);
     }
 
     public void saveLetter() {
@@ -69,18 +85,24 @@ public class Steps {
     public void viewLetterFromDraft() {
         MailPage mailPage = new MailPage(driver);
         DraftPage draftPage = mailPage.draftPageView();
+        createdLetter.setId(draftPage.getLetterId());
         draftPage.chooseSavedLetter();
     }
-
 
     public void sendLetter() {
         LetterEditPage letterEditPage = new LetterEditPage(driver);
         letterEditPage.sendLetter();
     }
-
     public boolean isSavedLetterSent() {
         LetterEditPage editPage = new LetterEditPage(driver);
         return editPage.isSent();
+    }
+
+    public boolean checkLetterInDraft() {
+        MailPage mailPage = new MailPage(driver);
+        DraftPage draftPage = mailPage.draftPageView();
+        return !draftPage.isDraftEmpty() && draftPage.getLetterId().equals(createdLetter.getId());
+
     }
 
     public void viewLetterFromSent() {
@@ -93,4 +115,6 @@ public class Steps {
         MailPage mailPage = new MailPage(driver);
         mailPage.logout();
     }
+
+
 }
